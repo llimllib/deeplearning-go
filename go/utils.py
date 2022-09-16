@@ -1,5 +1,5 @@
-from go.gotypes import Player
-from go.goboard_slow import Board, Move, Point
+from go.gotypes import Player, Point
+from go.goboard_slow import Board, Move
 
 COLS = "ABCDEFGHJKLMNOPQRST"
 STONE_TO_CHAR = {
@@ -29,3 +29,9 @@ def print_board(board: Board):
             line.append(STONE_TO_CHAR[stone])
         print(f"{bump}{row} {''.join(line)}")
     print(f"    {'  '.join(COLS[:board.num_cols])}")
+
+
+def point_from_coords(coords: str) -> Point:
+    col = COLS.index(coords[0].upper()) + 1
+    row = int(coords[1:])
+    return Point(row=row, col=col)
