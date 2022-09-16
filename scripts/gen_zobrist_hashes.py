@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# This script is used to generate zobrist.py. See Makefile
 import os
 import random
 import sys
