@@ -1,5 +1,5 @@
 import copy
-from gotypes import Point, Player
+from go.gotypes import Point, Player
 from typing import Dict, Iterable, List, Optional, Tuple
 
 
