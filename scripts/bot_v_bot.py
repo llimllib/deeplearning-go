@@ -1,9 +1,14 @@
 #!/usr/bin/env python
-from go.agent import RandomBot
+import os
+import sys
+import time
+
+sys.path.insert(0, os.path.dirname(sys.argv[0]) + "/..")
+
+from go.agent.naive import RandomBot
 from go.goboard_slow import GameState
 from go.gotypes import Player
 from go.utils import print_board, print_move
-import time
 
 
 def main():
