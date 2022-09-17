@@ -1,8 +1,8 @@
 import random
 from go.agent.base import Agent
 from go.agent.helpers import is_point_an_eye
-from go.goboard_slow import GameState, Move
-from go.gotypes import Point
+from go.goboard import GameState
+from go.gotypes import Point, Move
 
 
 class RandomBot(Agent):
