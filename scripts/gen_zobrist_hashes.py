@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # This script is used to generate zobrist.py. See Makefile
+# some updates from https://github.com/maxpumperla/deep_learning_and_the_game_of_go/pull/73
 import os
 import random
 import sys
@@ -14,7 +15,7 @@ MAX63 = 0x7FFFFFFFFFFFFFFF
 table = {}
 for row in range(1, 20):
     for col in range(1, 20):
-        for state in (Player.black, Player.white):
+        for state in (Player.black, Player.white, None):
             code = random.randint(1, MAX63)
             table[Point(row, col), state] = code
 
@@ -23,14 +24,14 @@ codes = ",\n".join(
 )
 
 print(
-    f"""from typing import Dict, Tuple
+    f"""from typing import Dict, Optional, Tuple
 from go.gotypes import Player, Point
 
 __all__ = ["HASH_CODE", "EMPTY_BOARD"]
 
-HASH_CODE: Dict[Tuple[Point, Player], int]  = {{
+HASH_CODE: Dict[Tuple[Point, Optional[Player]], int]  = {{
 {codes}
 }}
 
-EMPTY_BOARD = 0"""
+EMPTY_BOARD = {random.randint(0, MAX63)}"""
 )
