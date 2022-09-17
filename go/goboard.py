@@ -1,33 +1,8 @@
 import copy
-from go.gotypes import Point, Player
+from go.gotypes import Point, Player, Move
 from go.zobrist import EMPTY_BOARD, HASH_CODE
+from go.scoring import compute_game_result
 from typing import Dict, Iterable, List, Optional, Tuple
-
-
-class Move:
-    def __init__(
-        self,
-        point: Optional[Point] = None,
-        is_pass: bool = False,
-        is_resign: bool = False,
-    ):
-        assert (point is not None) ^ is_pass ^ is_resign
-        self.point = point
-        self.is_play = self.point is not None
-        self.is_pass = is_pass
-        self.is_resign = is_resign
-
-    @classmethod
-    def play(cls, point: Point) -> "Move":
-        return Move(point=point)
-
-    @classmethod
-    def pass_turn(cls) -> "Move":
-        return Move(is_pass=True)
-
-    @classmethod
-    def resign(cls) -> "Move":
-        return Move(is_resign=True)
 
 
 class GoString:
@@ -104,7 +79,7 @@ class Board:
             self._grid[new_string_point] = new_string
 
         # apply the hash code for this point and player to the zobrist hash
-        self._hash ^= HASH_CODE[point, player]
+        self._hash ^= HASH_CODE[(point, player)]
 
         # replace liberties of any adjacent strings of the opposite color
         for other_color_string in adjacent_opposite_color:
@@ -250,3 +225,28 @@ class GameState:
             and not self.is_move_self_capture(self.next_player, move)
             and not self.does_move_violate_ko(self.next_player, move)
         )
+
+    # had to pull this and `winner` from github because (AFAICT) they're not in
+    # the book.
+    #
+    # https://github.com/maxpumperla/deep_learning_and_the_game_of_go/blob/6148f57eb98e4c75b102d096401efe780e911442/code/dlgo/goboard_slow.py
+    def legal_moves(self) -> List[Move]:
+        moves = []
+        for row in range(1, self.board.num_rows + 1):
+            for col in range(1, self.board.num_cols + 1):
+                move = Move.play(Point(row, col))
+                if self.is_valid_move(move):
+                    moves.append(move)
+        # These two moves are always legal.
+        moves.append(Move.pass_turn())
+        moves.append(Move.resign())
+
+        return moves
+
+    def winner(self) -> Optional[Player]:
+        if not self.is_over() or not self.last_move:
+            return None
+        if self.last_move.is_resign:
+            return self.next_player
+        game_result = compute_game_result(self)
+        return game_result.winner

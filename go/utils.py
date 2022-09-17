@@ -1,5 +1,5 @@
-from go.gotypes import Player, Point
-from go.goboard_slow import Board, Move
+from go.gotypes import Player, Point, Move
+from go.goboard import Board
 
 COLS = "ABCDEFGHJKLMNOPQRST"
 STONE_TO_CHAR = {

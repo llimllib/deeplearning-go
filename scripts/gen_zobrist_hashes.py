@@ -23,11 +23,12 @@ codes = ",\n".join(
 )
 
 print(
-    f"""from go.gotypes import Player, Point
+    f"""from typing import Dict, Tuple
+from go.gotypes import Player, Point
 
 __all__ = ["HASH_CODE", "EMPTY_BOARD"]
 
-HASH_CODE = {{
+HASH_CODE: Dict[Tuple[Point, Player], int]  = {{
 {codes}
 }}
 

@@ -4,9 +4,9 @@ import sys
 
 sys.path.insert(0, os.path.dirname(sys.argv[0]) + "/..")
 
-from go.goboard import GameState, Move
+from go.goboard import GameState
 from go.agent.naive import RandomBot
-from go.gotypes import Player
+from go.gotypes import Player, Move
 from go.utils import print_board, print_move, point_from_coords
 
 

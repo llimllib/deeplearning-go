@@ -6,7 +6,7 @@ import time
 sys.path.insert(0, os.path.dirname(sys.argv[0]) + "/..")
 
 from go.agent.naive import RandomBot
-from go.goboard_slow import GameState
+from go.goboard import GameState
 from go.gotypes import Player
 from go.utils import print_board, print_move
 
