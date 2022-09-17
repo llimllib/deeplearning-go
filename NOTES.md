@@ -29,6 +29,8 @@ Errata:
   - in the code (see link above) they've wisely inlined it to speed it up
 - "The implementation of simulate_random_game is identical to the bot_v_bot example considered in chapter 3"
   - the implementation they're referring to is the `main` function, I found this surprising a bit, and had to discover what they meant by reading the github code.
+- `np.doc` instead of `np.dot` on pg 92
+  - https://github.com/maxpumperla/deep_learning_and_the_game_of_go/pull/105
 
 TODO:
 
