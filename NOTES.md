@@ -2,7 +2,7 @@ book github repo: https://github.com/maxpumperla/deep_learning_and_the_game_of_g
 
 currently something is busted, because bot_v_bot seems to go on forever
 
-Errata:
+Notes:
 
 - `legal_moves` and `winner` are in GameState and called but never given in the book
   - `compute_game_result` is called from `winner` and likewise never referenced
@@ -31,6 +31,10 @@ Errata:
   - the implementation they're referring to is the `main` function, I found this surprising a bit, and had to discover what they meant by reading the github code.
 - `np.doc` instead of `np.dot` on pg 92
   - https://github.com/maxpumperla/deep_learning_and_the_game_of_go/pull/105
+- random usage of the `six` module despite limiting to python 3
+  - `input` is `input` in all versions of python 3, for example
+- so many uses of "just"... for things that are quite complex!
+- the book shows using pickle to load the mnist data, but it's stored in the repo as an `npz` file and the github code has somewhat been modified to match, but not entirely
 
 TODO:
 
@@ -43,3 +47,9 @@ TODO:
 - Can we do better self-declarations than using strings?
   - example: MCTSNode has to type `parent` as `Optional['MCTSNode']` or else
     we get an error that it's undefined
+- add tests
+- figure out how to get pyright to see numpy
+  - need to get "type stubs" in there somehow
+- my numpy typings are a mess, make them better
+  - numpy.typing.NDArray[float64] sort of types maybe?
+  - related to the above TODO
