@@ -1,1 +1,6 @@
 __pycache__
+dlgenv
+dlgenvpypy
+
+# anybody can run it with the modern python of their choice
+.tool-versions
