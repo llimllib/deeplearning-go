@@ -1,0 +1,4 @@
+numpy
+
+# not _strictly_ required, but v handy
+ipython
