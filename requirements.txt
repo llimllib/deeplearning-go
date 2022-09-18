@@ -1,4 +1,7 @@
 numpy
+scipy
 
-# not _strictly_ required, but v handy
+# dev tools
 ipython
+pyright
+mypy
