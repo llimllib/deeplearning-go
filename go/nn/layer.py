@@ -226,6 +226,7 @@ class SequentialNetwork:
 
     def add(self, layer: Layer):
         self.layers.append(layer)
+        layer.describe()
         if len(self.layers) > 1:
             self.layers[-1].connect(self.layers[-2])
 
