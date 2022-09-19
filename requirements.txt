@@ -5,3 +5,7 @@ scipy
 ipython
 pyright
 mypy
+pytest
+ipdb
+black
+pylint
