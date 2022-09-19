@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, TypeVar
 import random
 
 import numpy as np
 from numpy import typing as nptype
+from scipy.special import expit
 
 from go.nn.mnist import Feature, FeatureList
 
@@ -23,8 +24,8 @@ class Layer:
 
         # Analogously, a layer holds input and output data for the backward
         # pass
-        self.input_delta = None
-        self.output_delta = None
+        self.input_delta: Optional[nptype.NDArray[np.float64]] = None
+        self.output_delta: Optional[nptype.NDArray[np.float64]] = None
 
     def connect(self, layer: "Layer"):
         self.previous = layer
@@ -71,6 +72,8 @@ class Layer:
         raise NotImplementedError
 
 
+T = TypeVar("T")
+
 # so the type here is weird: sigmoid_scalar will happily work on any
 # nptype.ArrayLike, but the authors intend it to be a scalar-only version. I've
 # given it float -> float, but it will return an ArrayLike if an ArrayLike is
@@ -79,22 +82,26 @@ class Layer:
 #
 # I changed the name from sigmoid_double to sigmoid_scalar because "double"
 # doesn't make sense in python
-def sigmoid_scalar(x: float) -> float:
+def sigmoid_scalar(x: nptype.ArrayLike) -> nptype.ArrayLike:
     return 1.0 / (1.0 + np.exp(-x))
 
 
-def sigmoid(z: nptype.ArrayLike) -> nptype.ArrayLike:
+def sigmoid(z: nptype.NDArray[T]) -> nptype.NDArray[T]:
     return np.vectorize(sigmoid_scalar)(z)
 
 
 # same type issues here as above
-def sigmoid_prime_scalar(x: float) -> float:
+def sigmoid_prime_scalar(x: nptype.ArrayLike) -> nptype.ArrayLike:
     """the derivative of the sigmoid function"""
     return sigmoid(x) * (1 - sigmoid(x))
 
 
 def sigmoid_prime(z: nptype.ArrayLike) -> nptype.ArrayLike:
     return np.vectorize(sigmoid_prime_scalar)(z)
+
+
+def sigmoid_prime_scipy(z: nptype.ArrayLike) -> nptype.ArrayLike:
+    return expit(z) * (1 - expit(z))
 
 
 # an activation layer using the sigmoid function to activate neurons
@@ -108,14 +115,18 @@ class ActivationLayer(Layer):
     def forward(self):
         data = self.get_forward_input()
         # The forward pass is simply applying the sigmoid to the input data
-        self.output_data = sigmoid(data)
+        self.output_data = expit(data)
 
     def backward(self):
         delta = self.get_backward_input()
         data = self.get_forward_input()
         # The backward pass is element-wise multiplication of the error term
         # with the sigmoid derivative evaluated at the input to this layer
-        self.output_delta = delta * sigmoid_prime(data)
+        # self.output_delta = delta * sigmoid_prime_scipy(data)
+        #
+        # inlining for efficiency, and using scipy
+        e = expit(data)
+        self.output_delta = delta * e * (1 - e)
 
     def describe(self):
         print(f"|-- {self.__class__.__name__}")
