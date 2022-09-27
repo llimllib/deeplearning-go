@@ -38,6 +38,8 @@ currently something is busted, because bot_v_bot seems to go on forever
 - the index doesn't tell the reader where the MCTSAgent implementation is
 - the code in the first while loop on page 78 can be simplified by de morgan's laws:
   - (not A) and (not B) -> not (A or B)
+- pg 120: it says that each encoder module will have to provide a function called 'create', but provides no example of what this might look like
+  - I'm skeptical of the whole `get_encoder_by_name` deal, replace it?
 
 ## TODO:
 
