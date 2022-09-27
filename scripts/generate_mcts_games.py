@@ -22,7 +22,7 @@ def generate_game(
     board_size: int, rounds: int, max_moves: int, temperature: float
 ) -> Tuple[nptype.NDArray[np.float64], nptype.NDArray[np.float64]]:
     boards, moves = [], []
-    encoder = get_encoder_by_name("oneplane", board_size)
+    encoder = get_encoder_by_name("plane", board_size)
     game = GameState.new_game(board_size)
     # TODO: implement MCTSAgent
     bot = mcts.MCTSAgent(rounds, temperature)
