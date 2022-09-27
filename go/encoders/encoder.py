@@ -42,4 +42,4 @@ class Encoder(ABC):
 def get_encoder_by_name(name: str, board_size: int):
     module = import_module(f"go.encoders.{name}")
     constructor = getattr(module, "create")
-    return constructor((board_size, board_size))
+    return constructor(board_size)
