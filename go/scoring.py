@@ -6,7 +6,10 @@ from collections import namedtuple
 from typing import Dict, Optional
 
 from go.gotypes import Player, Point
-from go.goboard import Board, GameState
+
+# can't import Board or gamestate, circular reference. Use this for
+# forward ref
+import go.goboard
 
 
 class Territory:
@@ -54,7 +57,7 @@ class GameResult(namedtuple("GameResult", "b w komi")):
         return "W+%.1f" % (w - self.b,)
 
 
-def evaluate_territory(board: Board) -> Territory:
+def evaluate_territory(board: "go.goboard.Board") -> Territory:
     """evaluate_territory:
     Map a board into territory and dame.
 
@@ -93,7 +96,9 @@ def evaluate_territory(board: Board) -> Territory:
 
 
 def _collect_region(
-    start_pos: Point, board: Board, visited: Optional[Dict[Point, bool]] = None
+    start_pos: Point,
+    board: "go.goboard.Board",
+    visited: Optional[Dict[Point, bool]] = None,
 ):
     """_collect_region:
 
@@ -124,7 +129,7 @@ def _collect_region(
     return all_points, all_borders
 
 
-def compute_game_result(game_state: GameState):
+def compute_game_result(game_state: "go.goboard.GameState"):
     territory = evaluate_territory(game_state.board)
     return GameResult(
         territory.num_black_territory + territory.num_black_stones,
