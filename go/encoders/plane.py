@@ -7,6 +7,10 @@ from go.encoders.encoder import Encoder
 from go.goboard import Point, GameState
 
 
+def create(board_size: int) -> Encoder:
+    return OnePlaneEncoder(board_size)
+
+
 class OnePlaneEncoder(Encoder):
     def __init__(self, board_size: int):
         # the book lets you encode non-square boards, I'm just not
