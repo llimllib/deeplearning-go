@@ -2,7 +2,7 @@ book github repo: https://github.com/maxpumperla/deep_learning_and_the_game_of_g
 
 currently something is busted, because bot_v_bot seems to go on forever
 
-Notes:
+## Notes:
 
 - `legal_moves` and `winner` are in GameState and called but never given in the book
   - `compute_game_result` is called from `winner` and likewise never referenced
@@ -35,9 +35,15 @@ Notes:
   - `input` is `input` in all versions of python 3, for example
 - so many uses of "just"... for things that are quite complex!
 - the book shows using pickle to load the mnist data, but it's stored in the repo as an `npz` file and the github code has somewhat been modified to match, but not entirely
+- the index doesn't tell the reader where the MCTSAgent implementation is
+- the code in the first while loop on page 78 can be simplified by de morgan's laws:
+  - (not A) and (not B) -> not (A or B)
 
-TODO:
+## TODO:
 
+- implement mctsagent
+  - I went ahead and got to generate_mcts_games, which requires it
+  - page 77 is where the mcts impl starts
 - benchmark goboard.py
   - compare against fast_goboard after you make your own attempt
   - test pypy
@@ -48,11 +54,7 @@ TODO:
   - example: MCTSNode has to type `parent` as `Optional['MCTSNode']` or else
     we get an error that it's undefined
 - add tests
-- figure out how to get pyright to see numpy
-  - need to get "type stubs" in there somehow
-- my numpy typings are a mess, make them better
-  - numpy.typing.NDArray[float64] sort of types maybe?
-  - related to the above TODO
+- explore using mypyc to speed stuff up
 - Benchmark chapter 4 nn
   - profile and improve it
   - interesting note: pypy doesn't suck up all my CPUs but regular python seems to do
